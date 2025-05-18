@@ -28,10 +28,12 @@ struct HabitRowView: View {
             Spacer()
 
             Button {
-                if habit.isCompletedToday {
-                    habit.unmarkCompletedToday()
-                } else {
-                    habit.markCompletedToday()
+                withAnimation {
+                    if habit.isCompletedToday {
+                        habit.unmarkCompletedToday()
+                    } else {
+                        habit.markCompletedToday()
+                    }
                 }
             } label: {
                 Image(systemName: habit.isCompletedToday ? "checkmark.circle.fill" : "circle")

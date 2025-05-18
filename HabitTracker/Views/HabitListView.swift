@@ -21,33 +21,39 @@ struct HabitListView: View {
         return Double(completedHabits.count) / Double(habits.count)
     }
     var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Today")
-                    .font(.largeTitle.bold())
-                    .padding(.top)
-                
-                Text(Date.now.formatted(date: .long, time: .omitted))
-                    .foregroundStyle(.secondary)
-                
-                if !habits.isEmpty {
-                    ProgressView(value: completionRate)
-                        .tint(.green)
-                        .padding(.vertical)
-                    Text("\(completedHabits.count)/\(habits.count) habits completed")
-                        .font(.subheadline)
-                        .foregroundStyle(.gray)
-                }
+        NavigationSplitView(columnVisibility: .constant(.doubleColumn)) {
+            if !habits.isEmpty {
                 List {
-                    ForEach(habits) { habit in
-                        NavigationLink {
-                            Text("")
-                        } label: {
-                            HabitRowView(habit: habit)
+                    Section {
+                        HStack {
+                            CircularProgressView(progress: completionRate, color: .green)
+                                .frame(width: 100, height: 100)
+                                .padding()
+                                .padding(.trailing, 16)
+                            VStack(spacing: 8) {
+                                Text(Date.now.formatted(date: .long, time: .omitted))
+                                    .font(.headline)
+                                
+                                Text("\(completedHabits.count)/\(habits.count) habits completed")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.gray)
+                            }
                         }
                     }
-                    .onDelete(perform: deleteItems)
+                    Section {
+                        ForEach(habits) { habit in
+                            NavigationLink {
+                                Text("")
+                            } label: {
+                                HabitRowView(habit: habit)
+                            }
+                        }
+                        .onDelete(perform: deleteItems)
+                    } header: {
+                        SectionHeaderView(text: "Habits")
+                    }
                 }
+                .navigationTitle("Today")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         EditButton()
@@ -58,10 +64,14 @@ struct HabitListView: View {
                         }
                     }
                 }
-                Spacer()
+                .toolbar(removing: .sidebarToggle)
+            } else {
+                EmptyHabitsView(onAddHabit: addItem)
             }
-            .padding(.horizontal)
+        } detail: {
+            Text("Details")
         }
+        .navigationSplitViewStyle(.balanced)
     }
     
     private func addItem() {
