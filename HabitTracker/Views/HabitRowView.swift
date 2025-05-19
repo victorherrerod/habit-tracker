@@ -41,6 +41,7 @@ struct HabitRowView: View {
                     .font(.title2)
             }
             .buttonStyle(.plain)
+            .sensoryFeedback(.success, trigger: habit.isCompletedToday)
         }
         .padding(.vertical, 4)
     }

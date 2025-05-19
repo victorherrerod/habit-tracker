@@ -11,6 +11,7 @@ import SwiftData
 struct HabitListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var habits: [Habit]
+    @State private var isShowingCreateHabit = false
     
     var completedHabits: [Habit] {
         habits.filter { $0.isCompletedToday }
@@ -56,29 +57,26 @@ struct HabitListView: View {
                 .navigationTitle("Today")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        EditButton()
-                    }
-                    ToolbarItem {
-                        Button(action: addItem) {
+                        Button(action: showCreateHabitSheet) {
                             Label("Add Item", systemImage: "plus")
                         }
                     }
                 }
                 .toolbar(removing: .sidebarToggle)
             } else {
-                EmptyHabitsView(onAddHabit: addItem)
+                EmptyHabitsView(onAddHabit: showCreateHabitSheet)
             }
         } detail: {
             Text("Details")
         }
         .navigationSplitViewStyle(.balanced)
+        .sheet(isPresented: $isShowingCreateHabit) {
+            CreateHabitView()
+        }
     }
     
-    private func addItem() {
-        withAnimation {
-            let newItem = Habit(name: "")
-            modelContext.insert(newItem)
-        }
+    private func showCreateHabitSheet() {
+        isShowingCreateHabit = true
     }
     
     private func deleteItems(offsets: IndexSet) {

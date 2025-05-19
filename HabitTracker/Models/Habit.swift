@@ -24,7 +24,7 @@ final class Habit {
         id: UUID = .init(),
         name: String,
         emoji: String = "✅",
-        color: String = "blue",
+        color: String = "#0000FF",
         createdAt: Date = Date(),
         completions: [Date] = [],
         frequency: HabitFrequency = .daily

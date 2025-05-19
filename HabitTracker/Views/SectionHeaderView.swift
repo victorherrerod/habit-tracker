@@ -12,7 +12,6 @@ struct SectionHeaderView: View {
     var body: some View {
         Text(text)
             .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
-            .headerProminence(.increased)
     }
 }
 
