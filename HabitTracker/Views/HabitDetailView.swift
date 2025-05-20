@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct HabitDetailView: View {
-    @StateObject var viewModel: HabitDetailViewModel
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @State var viewModel: HabitDetailViewModel
+    @State private var isDeleting = false
+
     var body: some View {
         NavigationStack{
             ScrollView {
@@ -47,21 +51,44 @@ Longest streak: \(viewModel.longestStreak) days
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    //TODO Calendar View, delete button and Edit behavior
+                    //TODO Calendar View and Edit behavior
                     
+                    Button(role: .destructive) {
+                        isDeleting = true
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("Delete Habit")
+                                .font(.title2)
+                            Spacer()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.vertical)
                     
                     Spacer()
                 }
-                .padding()
+                .padding(32)
                 .toolbar {
                     EditButton()
+                }
+                .alert("Delete Habit?", isPresented: $isDeleting) {
+                    Button("Delete", role: .destructive) {
+                        deleteHabit(viewModel.habit)
+                        dismiss()
+                    }
                 }
             }
         }
     }
+
+    func deleteHabit(_ habit: Habit) {
+        modelContext.delete(habit)
+        dismiss()
+    }
 }
 
 #Preview {
-    var viewModel = HabitDetailViewModel(habit: .mockList[0])
+    let viewModel = HabitDetailViewModel(habit: .mockList[0])
     HabitDetailView(viewModel: viewModel)
 }

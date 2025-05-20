@@ -9,8 +9,9 @@
 import Foundation
 import SwiftUI
 
-class HabitDetailViewModel: ObservableObject {
-    @Published var habit: Habit
+@Observable
+class HabitDetailViewModel {
+    var habit: Habit
     
     init(habit: Habit) {
         self.habit = habit

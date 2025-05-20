@@ -12,6 +12,7 @@ struct HabitListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var habits: [Habit]
     @State private var isShowingCreateHabit = false
+    @State private var selectedHabit: Habit? = nil
     
     var completedHabits: [Habit] {
         habits.filter { $0.isCompletedToday }
@@ -24,7 +25,7 @@ struct HabitListView: View {
     var body: some View {
         NavigationSplitView(columnVisibility: .constant(.doubleColumn)) {
             if !habits.isEmpty {
-                List {
+                List(selection: $selectedHabit) {
                     Section {
                         HStack {
                             CircularProgressView(progress: completionRate, color: .green)
@@ -43,11 +44,8 @@ struct HabitListView: View {
                     }
                     Section {
                         ForEach(habits) { habit in
-                            NavigationLink {
-                                Text("")
-                            } label: {
-                                HabitRowView(habit: habit)
-                            }
+                            HabitRowView(habit: habit)
+                                .tag(habit)
                         }
                         .onDelete(perform: deleteItems)
                     } header: {
@@ -67,7 +65,11 @@ struct HabitListView: View {
                 EmptyHabitsView(onAddHabit: showCreateHabitSheet)
             }
         } detail: {
-            Text("Details")
+            if let habit = selectedHabit {
+                HabitDetailView(viewModel: HabitDetailViewModel(habit: habit))
+            } else {
+                Text("Select a habit")
+            }
         }
         .navigationSplitViewStyle(.balanced)
         .sheet(isPresented: $isShowingCreateHabit) {
