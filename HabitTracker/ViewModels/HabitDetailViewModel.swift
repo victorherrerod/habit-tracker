@@ -41,7 +41,7 @@ class HabitDetailViewModel {
     // O(n) instead of O(nlogn) by using a set
     func calculateLongestStreak() -> Int {
         let calendar = Calendar.current
-        let normalizedDates = Set(habit.completions.map { calendar.startOfDay(for: $0) })
+        let normalizedDates = Set(habit.completions.map { $0.startOfDay() })
         
         var longest = 0
         

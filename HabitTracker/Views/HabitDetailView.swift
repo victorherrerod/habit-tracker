@@ -52,6 +52,8 @@ Longest streak: \(viewModel.longestStreak) days
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
                     //TODO Calendar View and Edit behavior
+                    WeeklyCompletionsView(completions: viewModel.habit.completions, onTap: { })
+                    
                     
                     Button(role: .destructive) {
                         isDeleting = true
@@ -66,7 +68,6 @@ Longest streak: \(viewModel.longestStreak) days
                     .buttonStyle(.borderedProminent)
                     .padding(.vertical)
                     
-                    Spacer()
                 }
                 .padding(32)
                 .toolbar {
