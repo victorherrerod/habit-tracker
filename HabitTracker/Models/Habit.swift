@@ -83,7 +83,7 @@ extension Habit {
     
 #if DEBUG    
     static var mockList: [Habit] = [
-        Habit(name: "Read a Book", emoji: "📚", color: "#FF9500"),
+        Habit(name: "Read a Book", emoji: "📚", color: "#FF9500", completions: Date.mockList),
         Habit(name: "Drink Water", emoji: "💧", color: "#34C759"),
         Habit(name: "Meditate", emoji: "🧘‍♂️", color: "#AF52DE"),
         Habit(name: "Workout", emoji: "🏋️", color: "#FF3B30")

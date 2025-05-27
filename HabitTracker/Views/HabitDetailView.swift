@@ -10,7 +10,7 @@ import SwiftUI
 struct HabitDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @State var viewModel: HabitDetailViewModel
+    var viewModel: HabitDetailViewModel
     @State private var isDeleting = false
 
     var body: some View {
@@ -35,7 +35,6 @@ struct HabitDetailView: View {
                     }
                     Divider()
                         .overlay(.secondary)
-                        .padding()
                     
                     VStack(alignment: .leading) {
                         Text("Completion History")
@@ -53,7 +52,7 @@ Longest streak: \(viewModel.longestStreak) days
                     
                     //TODO Calendar View and Edit behavior
                     WeeklyCompletionsView(completions: viewModel.habit.completions, onTap: { })
-                    
+                        .padding(.vertical)
                     
                     Button(role: .destructive) {
                         isDeleting = true

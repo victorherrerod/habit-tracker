@@ -21,17 +21,24 @@ struct WeeklyCompletionsView: View {
         }.reversed()
     }
     var body: some View {
-        HStack {
-            ForEach(weekDates, id: \.self) { date in
-                VStack {
-                    Circle()
-                        .fill(completionSet.contains(date) ? Color.green : Color.gray.opacity(0.2))
-                        .frame(width: 20, height: 20)
-                    Text(date.formatted(.dateTime.weekday(.narrow)))
-                        .font(.caption2)
+        Button(action: onTap) {
+            HStack {
+                ForEach(weekDates, id: \.self) { date in
+                    VStack {
+                        Circle()
+                            .fill(completionSet.contains(date) ? Color.green : Color.gray.opacity(0.2))
+                            .padding(.horizontal, 8)
+                        Text(date.formatted(.dateTime.weekday(.short)))
+                    }
                 }
             }
+            .padding()
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray.opacity(0.3), lineWidth: 3)
+            )
         }
+        .buttonStyle(.plain)
     }
 }
 
