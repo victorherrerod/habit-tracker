@@ -11,13 +11,13 @@ struct WeeklyCompletionsView: View {
     let completions: [Date]
     let onTap: () -> Void
     var completionSet: Set<Date> {
-        Set(completions.map { $0.startOfDay() })
+        Set(completions.map { $0.startOfDay })
     }
     
     var weekDates: [Date] {
         let calendar = Calendar.current
         return (0..<7).map {
-            calendar.date(byAdding: .day, value: -$0, to: Date())!.startOfDay()
+            calendar.date(byAdding: .day, value: -$0, to: Date())!.startOfDay
         }.reversed()
     }
     var body: some View {

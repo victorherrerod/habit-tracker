@@ -12,6 +12,7 @@ struct HabitDetailView: View {
     @Environment(\.dismiss) private var dismiss
     var viewModel: HabitDetailViewModel
     @State private var isDeleting = false
+    @State private var isShowingCalendar = false
 
     var body: some View {
         NavigationStack{
@@ -51,7 +52,9 @@ Longest streak: \(viewModel.longestStreak) days
                     .frame(maxWidth: .infinity, alignment: .leading)
                     
                     //TODO Calendar View and Edit behavior
-                    WeeklyCompletionsView(completions: viewModel.habit.completions, onTap: { })
+                    WeeklyCompletionsView(completions: viewModel.habit.completions, onTap: {
+                        isShowingCalendar.toggle()
+                    })
                         .padding(.vertical)
                     
                     Button(role: .destructive) {
@@ -71,6 +74,10 @@ Longest streak: \(viewModel.longestStreak) days
                 .padding(32)
                 .toolbar {
                     EditButton()
+                }
+                .sheet(isPresented: $isShowingCalendar) {
+                    StreakCalendarView(completions: Set(viewModel.habit.completions.map { $0.startOfDay }), selectedDate: Date().startOfDay, color: viewModel.habit.uiColor)
+                        .presentationDetents([.medium])
                 }
                 .alert("Delete Habit?", isPresented: $isDeleting) {
                     Button("Delete", role: .destructive) {
